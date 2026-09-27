@@ -1,0 +1,24 @@
+cluster,n_spots,provisional_marker_label,label_z_margin,nevus_melanoma_signature_skew,skew_z_margin,top_enriched_pathway,n_significant_markers
+Cluster 0,2042,ambiguous (fibroblast_stroma vs endothelial),0.22,melanoma-M1-associated,0.74,,4
+Cluster 1,2283,keratinocyte,1.13,melanoma-M1-associated,0.77,Formation of the Cornified Envelope (Reactome_Pathways_2024),25
+Cluster 2,1734,ambiguous (endothelial vs keratinocyte),0.27,nevus-associated,3.15,Linoleic Acid (LA) Metabolism (Reactome_Pathways_2024),25
+Cluster 3,2460,endothelial,0.73,melanoma-M1-associated,0.66,Epigenetic Regulation of Gene Expression by MLL3 and MLL4 Complexes (Reactome_Pathways_2024),25
+Cluster 4,2450,ambiguous (endothelial vs myeloid),0.19,melanoma-M1-associated,1.19,,0
+Cluster 5,3934,ambiguous (melanocytic vs keratinocyte),0.09,melanoma-M1-associated,2.6,Formation of the Cornified Envelope (Reactome_Pathways_2024),25
+Cluster 6,1861,melanocytic,3.42,nevus-associated,4.64,FASTK Family Proteins Regulate Processing and Stability of Mitochondrial RNAs (Reactome_Pathways_2024),25
+Cluster 7,4148,keratinocyte,1.72,melanoma-M1-associated,2.55,Formation of the Cornified Envelope (Reactome_Pathways_2024),25
+Cluster 8,2224,T_cell,0.82,melanoma-M1-associated,2.67,Allograft Rejection (MSigDB_Hallmark_2020),25
+Cluster 9,965,ambiguous (fibroblast_stroma vs keratinocyte),0.01,nevus-associated,0.78,Collagen Degradation (Reactome_Pathways_2024),25
+Cluster 10,569,ambiguous (B_plasma vs myeloid),0.12,melanoma-M1-associated,0.62,Antimicrobial Humoral Response (GO:0019730) (GO_Biological_Process_2025),25
+Cluster 11,2624,fibroblast_stroma,0.55,melanoma-M1-associated,0.63,ECM Proteoglycans (Reactome_Pathways_2024),8
+Cluster 12,2119,fibroblast_stroma,0.5,melanoma-M1-associated,0.97,Epithelial Mesenchymal Transition (MSigDB_Hallmark_2020),5
+Cluster 13,3034,ambiguous (keratinocyte vs melanocytic),0.23,nevus-associated,0.1,Regulation of MITF-M-dependent Genes Involved in Pigmentation (Reactome_Pathways_2024),25
+Cluster 14,1307,fibroblast_stroma,1.22,melanoma-M1-associated,0.49,Epithelial Mesenchymal Transition (MSigDB_Hallmark_2020),15
+Cluster 15,838,keratinocyte,1.73,nevus-associated,0.93,Formation of the Cornified Envelope (Reactome_Pathways_2024),25
+Cluster 16,8000,fibroblast_stroma,1.54,nevus-associated,0.68,Epithelial Mesenchymal Transition (MSigDB_Hallmark_2020),25
+Cluster 17,4124,ambiguous (smooth_muscle vs endothelial),0.06,nevus-associated,1.01,FASTK Family Proteins Regulate Processing and Stability of Mitochondrial RNAs (Reactome_Pathways_2024),25
+Cluster 18,1461,endothelial,1.45,nevus-associated,2.66,Epithelial Mesenchymal Transition (MSigDB_Hallmark_2020),25
+Cluster 19,743,smooth_muscle,3.86,nevus-associated,0.97,Smooth Muscle Contraction (Reactome_Pathways_2024),25
+Cluster 20,1665,ambiguous (endothelial vs myeloid),0.07,melanoma-M1-associated,1.69,,0
+Cluster 21,1938,keratinocyte,0.75,nevus-associated,1.1,Metabolism of Lipids (Reactome_Pathways_2024),25
+Cluster 22,3335,ambiguous (myeloid vs B_plasma),0.19,melanoma-M1-associated,0.46,Activation of Matrix Metalloproteinases (Reactome_Pathways_2024),25
