@@ -54,6 +54,34 @@ The same study deposited imaging mass cytometry data on Zenodo
 (doi:10.5281/zenodo.15582615, about 26 GB, CC BY 4.0). It is not part of this
 analysis.
 
+## Secondary dataset (external validation only): GEO GSE300445
+
+"Spatial tumour-immune ecosystems shape the efficacy of anti-PD1
+immunotherapy in primary cutaneous melanoma" - a different study, different
+patients, no nevus component. Used in `notebooks/07_external_validation.ipynb`
+only, to check whether one finding from the primary dataset (notebook 05's
+tumour-immune distance pattern) shows up independently elsewhere - not part
+of this project's main nevus-to-melanoma analysis.
+
+- **GEO series:** https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE300445
+- **Samples:** 4 Visium sections (GSM9060732-GSM9060735), primary cutaneous
+  melanoma, same 18,085-probe panel as GSE298774's small panel (checked
+  identical gene_id sets)
+- **Structure:** one standard Space Ranger filtered matrix per sample - no
+  shared slide matrices, no missing barcodes, much simpler than GSE298774
+  (loaded via `list_gse300445_samples`/`load_all_gse300445` in
+  `src/geo_loading.py`)
+
+Download and unpack into `data/raw_gse300445/`:
+
+```bash
+mkdir -p data/raw_gse300445 && cd data/raw_gse300445
+curl -L -C - -O https://ftp.ncbi.nlm.nih.gov/geo/series/GSE300nnn/GSE300445/suppl/GSE300445_RAW.tar
+tar -xf GSE300445_RAW.tar
+```
+
 ## Citation
 
-If you use the data, cite the study above and GEO accession GSE298774.
+If you use the primary data, cite the Kreuger et al. study above and GEO
+accession GSE298774. If you use GSE300445, cite that series separately -
+see its GEO record for the associated publication.

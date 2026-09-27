@@ -1,5 +1,6 @@
 # Raw and processed data are downloaded/regenerated, not committed
 data/raw/
+data/raw_gse300445/
 data/processed/
 
 # Python

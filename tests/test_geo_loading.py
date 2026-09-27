@@ -142,3 +142,39 @@ def test_images_and_scalefactors(geo_dir):
     sp_entry = a.uns["spatial"]["L1"]
     assert sp_entry["scalefactors"]["tissue_lowres_scalef"] == 0.05
     assert sp_entry["images"]["hires"].shape == (4, 4, 3)
+
+
+def _write_gse300445_sample(d, gsm, sample, matrix, barcodes):
+    # unlike GSE298774, GSE300445 is one standard per-sample matrix that
+    # already contains only that sample's in-tissue spots - every barcode
+    # in the matrix is in_tissue, no shared/missing-barcode quirks to fake
+    pre = d / f"{gsm}_{sample}_processed_"
+    _gz(str(pre) + "matrix.mtx.gz", _mtx_bytes(matrix))
+    _gz(str(pre) + "barcodes.tsv.gz", "\n".join(barcodes) + "\n")
+    _gz(str(pre) + "features.tsv.gz", "".join(f"{i}\t{s}\tGene Expression\n" for i, s in GENES))
+    rows = ["barcode,in_tissue,array_row,array_col,pxl_row_in_fullres,pxl_col_in_fullres"]
+    for k, b in enumerate(GRID):
+        rows.append(f"{b},{int(b in barcodes)},{k},{k},{100 + k},{200 + k}")
+    _gz(str(pre) + "tissue_positions.csv.gz", "\n".join(rows) + "\n")
+    _gz(str(pre) + "scalefactors_json.json.gz", json.dumps({"tissue_hires_scalef": 0.1, "tissue_lowres_scalef": 0.05, "spot_diameter_fullres": 10.0, "fiducial_diameter_fullres": 20.0}))
+    _gz(str(pre) + "tissue_hires_image.png.gz", _png_bytes())
+    _gz(str(pre) + "tissue_lowres_image.png.gz", _png_bytes())
+
+
+def test_gse300445_list_and_load(tmp_path):
+    counts = np.arange(1, 13).reshape(3, 4)
+    barcodes = ["AAAA-1", "CCCC-1", "GGGG-1", "TTTT-1"]
+    _write_gse300445_sample(tmp_path, "GSM1", "SampleA", counts, barcodes)
+    _write_gse300445_sample(tmp_path, "GSM2", "SampleB", counts[:, :2], barcodes[:2])
+
+    listing = gl.list_gse300445_samples(tmp_path)
+    assert list(listing["sample"]) == ["SampleA", "SampleB"]
+
+    a = gl.load_gse300445_sample(tmp_path, "GSM1", "SampleA", load_images=False)
+    assert a.n_obs == 4 and set(a.obs["barcode"]) == set(barcodes)
+    assert a[a.obs["barcode"] == "AAAA-1"].X.toarray().ravel().tolist() == [1, 5, 9]
+    assert a.obs["in_tissue"].all()
+
+    all_samples = gl.load_all_gse300445(tmp_path, load_images=False)
+    assert set(all_samples) == {"SampleA", "SampleB"}
+    assert all_samples["SampleB"].n_obs == 2

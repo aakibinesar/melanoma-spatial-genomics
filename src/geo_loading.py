@@ -65,7 +65,14 @@ def read_positions(path: str | Path) -> pd.DataFrame:
     if header[0] != "barcode":
         raise ValueError(f"unexpected tissue_positions header: {header}")
     df = pd.DataFrame(body, columns=header).set_index("barcode")
-    return df[_POS_COLS].astype(int)
+    df = df[_POS_COLS]
+    # GSE298774's pixel coordinates happen to be integer-valued strings, but
+    # that's not guaranteed in general - GSE300445's are sub-pixel floats
+    # (and can be negative, off the visible image). array_row/col and
+    # in_tissue are genuine discrete grid indices/flags and stay int.
+    df[["in_tissue", "array_row", "array_col"]] = df[["in_tissue", "array_row", "array_col"]].astype(int)
+    df[["pxl_row_in_fullres", "pxl_col_in_fullres"]] = df[["pxl_row_in_fullres", "pxl_col_in_fullres"]].astype(float)
+    return df
 
 
 def read_features(path: str | Path) -> pd.DataFrame:
@@ -202,3 +209,63 @@ def load_all(raw_dir: str | Path, **kwargs) -> dict[str, ad.AnnData]:
     for gsm in sorted(list_libraries(raw_dir)["gsm"].unique()):
         out.update(load_slide(raw_dir, gsm, **kwargs))
     return out
+
+
+_GSE300445_MATRIX_RE = re.compile(r"^(GSM\d+)_(.+)_processed_matrix\.mtx\.gz$")
+
+
+def list_gse300445_samples(raw_dir: str | Path) -> pd.DataFrame:
+    """One row per sample in GSE300445's deposit: GEO sample and its name.
+
+    Unlike GSE298774, this deposit is one standard Space Ranger
+    filtered_feature_bc_matrix per sample - no shared slide-level matrices,
+    no missing barcodes - so it needs far less special-case handling.
+    """
+    raw_dir = Path(raw_dir)
+    rows = []
+    for f in sorted(raw_dir.glob("GSM*_processed_matrix.mtx.gz")):
+        m = _GSE300445_MATRIX_RE.match(f.name)
+        gsm, sample = m.groups()
+        rows.append({"gsm": gsm, "sample": sample})
+    return pd.DataFrame(rows).sort_values("gsm").reset_index(drop=True)
+
+
+def load_gse300445_sample(raw_dir: str | Path, gsm: str, sample: str,
+                          load_images: bool = True) -> ad.AnnData:
+    """Load one GSE300445 sample. The matrix already contains only that
+    sample's in-tissue spots (checked: matrix columns == barcodes.tsv.gz
+    rows == tissue_positions.csv in_tissue count, for all 4 samples)."""
+    raw_dir = Path(raw_dir)
+    pre = raw_dir / f"{gsm}_{sample}_processed_"
+    barcodes = _lines(Path(str(pre) + "barcodes.tsv.gz"))
+    features = read_features(str(pre) + "features.tsv.gz")
+    pos = read_positions(str(pre) + "tissue_positions.csv.gz")
+
+    X = read_matrix(str(pre) + "matrix.mtx.gz").T.tocsr().astype(np.float32)
+    obs = pos.loc[barcodes].copy()
+    obs.insert(0, "barcode", barcodes)
+    obs.insert(0, "sample", sample)
+    obs.insert(0, "gsm", gsm)
+    obs["in_tissue"] = obs["in_tissue"].astype(bool)
+    obs.index = [f"{sample}_{b}" for b in barcodes]
+
+    var = features.set_index("gene_id", drop=False)
+    adata = ad.AnnData(X=X, obs=obs, var=var.rename_axis(None))
+    adata.var_names = pd.Index(var["gene_symbol"].values)
+    adata.var_names_make_unique()
+    adata.obsm["spatial"] = obs[["pxl_col_in_fullres", "pxl_row_in_fullres"]].to_numpy(float)
+    sf = json.loads(gzip.open(str(pre) + "scalefactors_json.json.gz", "rt").read())
+    entry = {"scalefactors": sf}
+    if load_images:
+        entry["images"] = {"hires": _read_image(Path(str(pre) + "tissue_hires_image.png.gz")),
+                           "lowres": _read_image(Path(str(pre) + "tissue_lowres_image.png.gz"))}
+    adata.uns["spatial"] = {sample: entry}
+    return adata
+
+
+def load_all_gse300445(raw_dir: str | Path, **kwargs) -> dict[str, ad.AnnData]:
+    """Load every GSE300445 sample, keyed by sample name."""
+    raw_dir = Path(raw_dir)
+    samples = list_gse300445_samples(raw_dir)
+    return {row.sample: load_gse300445_sample(raw_dir, row.gsm, row.sample, **kwargs)
+            for row in samples.itertuples()}
