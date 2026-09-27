@@ -1,0 +1,4 @@
+signature,depth_slope,adjusted_p,adjusted_direction
+MAPK_output,0.05326446821227647,5.34748599757805e-50,higher in tumour_cold
+KRAS_Signaling_Up,0.015736593253986787,1.613559475529663e-192,higher in tumour_infiltrated
+PI3K_AKT_mTOR,0.03199864269816635,0.06112641880945946,higher in tumour_infiltrated

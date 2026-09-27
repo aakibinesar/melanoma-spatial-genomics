@@ -1,0 +1,4 @@
+signature,tumour_cold_mean,tumour_infiltrated_mean,mannwhitney_p,direction
+MAPK_output,0.19807869151385582,0.196112306989125,0.31667281343869425,higher in tumour_cold
+KRAS_Signaling_Up,0.034790331479784505,0.11485572562457527,0.0,higher in tumour_infiltrated
+PI3K_AKT_mTOR,0.08929387932880657,0.17174133289833085,0.0,higher in tumour_infiltrated
