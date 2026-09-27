@@ -1,0 +1,27 @@
+cluster,compartment,n_spots
+Cluster 0,other,2042
+Cluster 1,other,2283
+Cluster 2,other,1734
+Cluster 3,other,2460
+Cluster 4,other,2450
+Cluster 5,tumour_cold,3934
+Cluster 6,tumour_cold,1861
+Cluster 7,other,4148
+Cluster 8,tumour_infiltrated,2224
+Cluster 9,immune_only,965
+Cluster 10,immune_only,569
+Cluster 11,other,2624
+Cluster 12,other,2119
+Cluster 13,other,3034
+Cluster 14,other,1307
+Cluster 15,other,838
+Cluster 16,other,8000
+Cluster 17,other,4124
+Cluster 18,other,1461
+Cluster 19,other,743
+Cluster 20,other,1665
+Cluster 21,other,1938
+Cluster 22,immune_only,3335
+Cluster 23,batch_flagged,1713
+Cluster 24,batch_flagged,354
+Cluster 25,batch_flagged,59
