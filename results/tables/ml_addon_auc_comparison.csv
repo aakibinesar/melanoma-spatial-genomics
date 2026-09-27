@@ -1,0 +1,4 @@
+model,auc
+full (50 PCs),0.9891092389246497
+depth-only baseline,0.8941632112773975
+depth-residualized PCs,0.6652352406254461
