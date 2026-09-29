@@ -13,8 +13,8 @@ clinical or diagnostic claims.
 
 ## Status
 
-In progress - currently at the dataset-understanding stage. Nothing below the
-"Analysis plan" heading has been run yet; results will be added as they exist.
+Complete. All stages below have been run; see [`docs/report.md`](docs/report.md)
+for the full write-up of methods and findings.
 
 ## Data
 
@@ -24,21 +24,24 @@ not redistributed here - see [`data/README.md`](data/README.md) for download
 instructions and [`docs/dataset_description.md`](docs/dataset_description.md)
 for what the deposit does and does not contain.
 
-## Analysis plan
+## Notebooks
 
-1. Data inspection and dictionary (what each file is, how libraries map to slides)
-2. Quality control, documented per sample and per threshold
-3. Normalisation, dimensionality reduction, clustering (clusters stay
-   unlabelled until markers are examined)
-4. Spatial visualisation of clusters, genes and gene-set scores
-5. Differential expression and marker analysis
-6. Biological annotation using published gene signatures
-7. Pathway / gene-set enrichment
-8. Spatial neighbourhood analysis (Squidpy): neighbourhood enrichment,
-   co-occurrence, spatial autocorrelation
-9. Tumour-immune architecture
-10. Pathway-level interpretation of melanoma driver biology (expression-based
-    only; no mutation calling)
+1. `01_dataset_exploration` - data inspection and dictionary
+2. `02_qc_clustering` - quality control, normalisation, clustering
+3. `03_de_annotation_enrichment` - differential expression, marker
+   annotation, pathway/gene-set enrichment
+4. `04_spatial_statistics` - Squidpy neighbourhood enrichment, co-occurrence,
+   spatial autocorrelation
+5. `05_tumour_immune_architecture` - compartment definitions, tumour-immune
+   spatial architecture
+6. `06_pathway_interpretation` - melanoma driver-pathway activity
+   (expression-based only; no mutation calling)
+7. `07_external_validation` - checking findings against a second, independent
+   dataset (GSE300445)
+8. `08_ml_addon` - a small supervised-learning check, cross-validated by
+   patient
+9. `09_epidermal_signal` - following up an unplanned finding from notebook 6
+   to a specific, testable spatial hypothesis
 
 Throughout: observed, inferred and hypothesised statements are kept separate,
 negative results are reported, and gene-signature scores are described as
