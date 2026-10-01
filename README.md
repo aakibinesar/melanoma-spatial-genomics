@@ -1,5 +1,7 @@
 # Melanoma Spatial Genomics
 
+[![tests](https://github.com/aakibinesar/melanoma-spatial-genomics/actions/workflows/tests.yml/badge.svg)](https://github.com/aakibinesar/melanoma-spatial-genomics/actions/workflows/tests.yml)
+
 Computational analysis of tumour-immune architecture in melanoma using
 spatial transcriptomics.
 
@@ -57,9 +59,13 @@ melanoma-spatial-genomics/
 ├── data/          download instructions (data itself is not committed)
 ├── notebooks/     numbered analysis notebooks
 ├── src/           reusable loading / QC / spatial / plotting code
+├── tests/         unit tests for src/ (run in CI - see .github/workflows/)
 ├── results/       figures and tables
 └── references/    reading list
 ```
+
+`requirements-test.txt` is a small subset of `requirements.txt` used by CI to
+run the unit tests quickly, without installing the full scanpy/squidpy stack.
 
 ## Reproducing
 

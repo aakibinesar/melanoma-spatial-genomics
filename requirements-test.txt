@@ -1,0 +1,9 @@
+# Minimal deps to run tests/test_geo_loading.py in CI - a small, fast subset
+# of requirements.txt (no scanpy/squidpy/gseapy needed, since the unit tests
+# only exercise src/geo_loading.py against synthetic fixtures, not real data).
+anndata==0.13.4
+numpy==2.4.6
+pandas==3.0.6
+scipy==1.18.1
+Pillow==12.3.0
+pytest==9.1.1
